@@ -1517,7 +1517,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 						if(!$this->hasEffect(Effect::JUMP) and $diff > 0.6 and $expectedVelocity < $this->speed->y and !$this->server->getAllowFlight()){
 							if($this->inAirTicks < 100){
 								$this->setMotion(new Vector3(0, $expectedVelocity, 0));
-							}elseif($this->kick("Flying is not enabled on this server")){
+							}elseif($this->kick("§cYou were kicked because you were flying!")){
 								$this->timings->stopTiming();
 								return false;
 							}
@@ -1592,11 +1592,11 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 	protected function processLogin(){
 		if(!$this->server->isWhitelisted(strtolower($this->getName()))){
-			$this->close($this->getLeaveMessage(), "Server is white-listed");
+			$this->close($this->getLeaveMessage(), "§cDelxCraft is currently undergoing maintenance");
 
 			return;
 		}elseif($this->server->getNameBans()->isBanned(strtolower($this->getName())) or $this->server->getIPBans()->isBanned($this->getAddress())){
-			$this->close($this->getLeaveMessage(), "You are banned");
+			$this->close($this->getLeaveMessage(), "§cError while connecting to the lobby. You are banned.");
 
 			return;
 		}
@@ -1610,13 +1610,13 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 		foreach($this->server->getOnlinePlayers() as $p){
 			if($p !== $this and strtolower($p->getName()) === strtolower($this->getName())){
-				if($p->kick("logged in from another location") === false){
-					$this->close($this->getLeaveMessage(), "Logged in from another location");
+				if($p->kick("§6§lSomeone else has logged in using your username.") === false){
+					$this->close($this->getLeaveMessage(), "§6§lSomeone else has logged in using your username.");
 					return;
 				}
 			}elseif($p->loggedIn and $this->getUniqueId()->equals($p->getUniqueId())){
-				if($p->kick("logged in from another location") === false){
-					$this->close($this->getLeaveMessage(), "Logged in from another location");
+				if($p->kick("§6§lSomeone else has logged in using your username.") === false){
+					$this->close($this->getLeaveMessage(), "§6§lSomeone else has logged in using your username.");
 					return;
 				}
 			}
